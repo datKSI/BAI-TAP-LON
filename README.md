@@ -9,32 +9,45 @@ Trước khi bắt đầu, hãy cài đủ các Extensions sau trên VS Code:
 2. Makefile Tools (Microsoft) -> QUAN TRỌNG: Để VS Code hiểu lệnh 'make'.
 3. Live Share (Microsoft) -> Nếu muốn code chung thời gian thực.
 
-*LƯU Ý: Nếu không muốn cài đặt lằng nhằng trên máy, hãy dùng GITHUB CODESPACES
-(Vào link GitHub -> Bấm nút Code xanh lá -> Chọn tab Codespaces -> Create).
+*LƯU Ý: Nếu không muốn cài đặt lằng nhằng trên máy, hãy dùng GITHUB CODESPACES.
 
 2. CẤU TRÚC THƯ MỤC
 -------------------------------------------------------------------------
 /PROJECT_ROOT
-  ├── include/         -> CHỨA "BẢN VẼ" (File .h - Khai báo tên hàm)
-  ├── src/             -> CHỨA "CODE THẬT" (File .c - Xử lý logic)
+  ├── include/         -> CHỨA FILE HEADER (.h)
+  ├── src/             -> CHỨA SOURCE CODE (.c)
   ├── Makefile         -> ROBOT BIÊN DỊCH (Gõ lệnh 'make' là chạy)
   └── input.inp        -> DỮ LIỆU TEST (Thay số vào đây để thử)
 
-3. PHÂN CÔNG NHIỆM VỤ (TRONG THƯ MỤC SRC/)
+3. VAI TRÒ FILE HEADER (.h) - USER-DEFINED FUNCTIONS
+-------------------------------------------------------------------------
+Thư mục include/ chứa các file .h. Đây là nơi chứa:
+
+- KHAI BÁO NGUYÊN MẪU HÀM (Function Prototypes):
+  Chỉ liệt kê tên hàm, kiểu dữ liệu trả về và các tham số đầu vào. Không chứa mã xử lý.
+
+- CÁC HÀM TỰ ĐỊNH NGHĨA (User-Defined Functions):
+  Đây là các hàm do nhóm tự viết (không phải hàm có sẵn của C). Việc tách ra file .h giúp các file .c khác có thể gọi và tái sử dụng chúng thông qua lệnh #include.
+
+4. PHÂN CÔNG NHIỆM VỤ (TRONG THƯ MỤC SRC/)
 -------------------------------------------------------------------------
 [A] main.c (LEADER)
     - File "Tổng quản". Đọc input -> Gọi hàm xử lý -> Ghi output.
+    - File này sẽ #include các file .h để gọi hàm.
 
 [B] common_math.c (DEV TOÁN)
-    - Kho công cụ toán: Fibonacci, tổng ước số, làm tròn...
+    - Định nghĩa chi tiết các hàm toán: Fibonacci, tổng ước số, làm tròn...
+    - Sau khi viết xong, khai báo nguyên mẫu vào common_math.h.
 
 [C] logic_weather.c (DEV THỜI TIẾT)
-    - Xử lý biến đổi: Tra bảng Nắng, Fog (Fibonacci), Cloud (Số bạn bè).
+    - Định nghĩa chi tiết hàm xử lý: Tra bảng Nắng, Fog, Cloud.
+    - Sau khi viết xong, khai báo nguyên mẫu vào logic_weather.h.
 
 [D] logic_solver.c (DEV THUẬT TOÁN)
-    - Trái tim xử lý: Chạy vòng lặp vét cạn tìm số bánh tối ưu.
+    - Định nghĩa chi tiết hàm thuật toán: Vòng lặp vét cạn tìm số bánh.
+    - Sau khi viết xong, khai báo nguyên mẫu vào logic_solver.h.
 
-4. QUY TRÌNH LÀM VIỆC & CHẠY CODE (DAILY WORKFLOW)
+5. QUY TRÌNH LÀM VIỆC & CHẠY CODE (DAILY WORKFLOW)
 -------------------------------------------------------------------------
 Dưới đây là quy trình 4 bước mỗi khi ngồi vào bàn làm việc:
 
