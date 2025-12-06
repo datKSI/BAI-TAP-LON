@@ -80,4 +80,4 @@ BƯỚC 4: LƯU & GỬI CODE LÊN GITHUB (PUSH)
 ⚠️ QUY TẮC AN TOÀN:
 - Trước khi sửa code, LUÔN LUÔN gõ 'git pull' để tránh xung đột.
 - Không sửa file của người khác nếu không cần thiết.
-- Nếu gõ 'make' bị lỗi: Kiểm tra lại xem đã cài GCC hoặc Extension chưa.
+- Nếu gõ 'make' bị lỗi: Kiểm tra lại xem đã cài GCC hoặc Extension chưa...........
