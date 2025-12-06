@@ -4,12 +4,15 @@
 
 1. YÊU CẦU CÀI ĐẶT (PREREQUISITES)
 -------------------------------------------------------------------------
-Trước khi code, hãy cài đủ các Extensions sau trên VS Code:
+Trước khi bắt đầu, hãy cài đủ các Extensions sau trên VS Code:
 1. C/C++ (Microsoft) -> Để code C và gợi ý lệnh.
-2. Makefile Tools (Microsoft) -> QUAN TRỌNG: Để VS Code hiểu file Makefile.
+2. Makefile Tools (Microsoft) -> QUAN TRỌNG: Để VS Code hiểu lệnh 'make'.
 3. Live Share (Microsoft) -> Nếu muốn code chung thời gian thực.
 
-2. CẤU TRÚC THƯ MỤC TỔNG QUÁT
+*LƯU Ý: Nếu không muốn cài đặt lằng nhằng trên máy, hãy dùng GITHUB CODESPACES
+(Vào link GitHub -> Bấm nút Code xanh lá -> Chọn tab Codespaces -> Create).
+
+2. CẤU TRÚC THƯ MỤC
 -------------------------------------------------------------------------
 /PROJECT_ROOT
   ├── include/         -> CHỨA "BẢN VẼ" (File .h - Khai báo tên hàm)
@@ -20,62 +23,48 @@ Trước khi code, hãy cài đủ các Extensions sau trên VS Code:
 3. PHÂN CÔNG NHIỆM VỤ (TRONG THƯ MỤC SRC/)
 -------------------------------------------------------------------------
 [A] main.c (LEADER)
-    - Là file "Tổng quản".
-    - Nhiệm vụ: Đọc input.inp -> Gọi lần lượt các ông B, C, D -> Ghi output.out.
+    - File "Tổng quản". Đọc input -> Gọi hàm xử lý -> Ghi output.
 
 [B] common_math.c (DEV TOÁN)
-    - Là "Kho công cụ toán học".
-    - Nhiệm vụ: Chứa hàm kiểm tra Fibonacci, tính tổng ước số, làm tròn...
-    - Các file khác muốn tính toán gì thì gọi hàm trong này.
+    - Kho công cụ toán: Fibonacci, tổng ước số, làm tròn...
 
 [C] logic_weather.c (DEV THỜI TIẾT)
-    - Là "Bộ xử lý biến đổi".
-    - Nhiệm vụ: Tra bảng Nắng, nhân đôi/chia đôi (Fog), check số bạn bè (Cloud).
-    - Input đi qua đây sẽ bị thay đổi giá trị trước khi tính toán.
+    - Xử lý biến đổi: Tra bảng Nắng, Fog (Fibonacci), Cloud (Số bạn bè).
 
 [D] logic_solver.c (DEV THUẬT TOÁN)
-    - Là "Trái tim xử lý" (Nặng nhất).
-    - Nhiệm vụ: Chạy 2 vòng lặp vét cạn (Brute-force) để tìm số bánh tối ưu.
-    - Áp dụng các ưu tiên: Nếp dư min -> Ưu tiên theo Weather.
+    - Trái tim xử lý: Chạy vòng lặp vét cạn tìm số bánh tối ưu.
 
-4. QUY TRÌNH DỮ LIỆU CHẠY (DATA FLOW)
+4. QUY TRÌNH LÀM VIỆC & CHẠY CODE (DAILY WORKFLOW)
 -------------------------------------------------------------------------
-INPUT (input.inp) 
-   ⬇
-LEADER (main.c) đọc dữ liệu
-   ⬇
-WEATHER (logic_weather.c) biến đổi dữ liệu (gọi Math để check)
-   ⬇
-SOLVER (logic_solver.c) tính toán tìm kết quả
-   ⬇
-OUTPUT (output.out)
+Dưới đây là quy trình 4 bước mỗi khi ngồi vào bàn làm việc:
 
-5. HƯỚNG DẪN CHẠY CODE (RUNNING)
+BƯỚC 1: LẤY CODE MỚI NHẤT TỪ GITHUB
+   - Mở Terminal (Ctrl + `).
+   - Nếu là lần đầu tiên:
+       git clone https://github.com/datKSI/BAI-TAP-LON.git
+   - Nếu đã có code rồi (làm việc hàng ngày):
+       git pull origin main
+
+BƯỚC 2: SỬA CODE & BIÊN DỊCH (BUILD)
+   - Vào thư mục /src sửa file của mình.
+   - Sau khi sửa xong, gõ lệnh biên dịch:
+       make
+   - Nếu không báo lỗi gì tức là biên dịch thành công.
+
+BƯỚC 3: CHẠY THỬ (RUN TEST)
+   - Gõ lệnh chạy chương trình:
+       ./banhchung_app       (Máy MacOS / Linux / Codespaces)
+       .\banhchung_app.exe   (Máy Windows)
+   - Mở file 'output.out' kiểm tra xem kết quả đúng chưa.
+
+BƯỚC 4: LƯU & GỬI CODE LÊN GITHUB (PUSH)
+   - Nếu code đã chạy ngon, hãy gửi lên cho anh em dùng:
+       git add .
+       git commit -m "Ghi chú ngắn gọn (VD: Da fix loi ham Fibonacci)"
+       git push origin main
+
 -------------------------------------------------------------------------
-Bước 1: Mở Terminal trong VS Code (Ctrl + `).
-Bước 2: Gõ lệnh:
-    make
-    (Lệnh này sẽ gọi gcc để biên dịch toàn bộ file trong /src)
-
-Bước 3: Gõ lệnh chạy chương trình:
-    ./banhchung_app       (Nếu dùng MacOS / Linux / Git Bash)
-    .\banhchung_app.exe   (Nếu dùng Windows PowerShell)
-
-Bước 4: Mở file 'output.out' để xem kết quả.
-
-6. QUY TRÌNH LÀM VIỆC NHÓM VỚI GIT (WORKFLOW)
--------------------------------------------------------------------------
-Lần đầu tiên tham gia:
-   git clone https://github.com/datKSI/BAI-TAP-LON.git
-
-Mỗi khi bắt đầu làm việc (Để lấy code mới nhất của anh em về):
-   git pull origin main
-
-Sau khi code xong và muốn gửi lên:
-   git add .
-   git commit -m "Ghi chú ngắn gọn về việc đã làm"
-   git push origin main
-
-LƯU Ý CUỐI CÙNG:
+⚠️ QUY TẮC AN TOÀN:
+- Trước khi sửa code, LUÔN LUÔN gõ 'git pull' để tránh xung đột.
 - Không sửa file của người khác nếu không cần thiết.
-- Nếu gõ 'make' bị lỗi -> Kiểm tra lại Extension 'Makefile Tools' hoặc cài đặt GCC.
+- Nếu gõ 'make' bị lỗi: Kiểm tra lại xem đã cài GCC hoặc Extension chưa.
