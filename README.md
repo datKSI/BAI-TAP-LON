@@ -68,9 +68,15 @@ BƯỚC 4: LƯU & GỬI CODE LÊN GITHUB (PUSH)
        git commit -m "Ghi chú ngắn gọn về việc đã sửa"
        git push origin main
        
-   - ⚠️ QUAN TRỌNG: Nếu lệnh trên báo lỗi (rejected) hoặc mạng lag, dùng lệnh mạnh này để ÉP code lên:
-       git push -f origin main
-
+   - ⚠️ QUAN TRỌNG: Nếu lệnh push bị lỗi (rejected):
+       git pull origin main
+       (Nếu có conflict, mở file và sửa thủ công)
+       git add .
+       git commit -m "Giải quyết conflict"
+       git push origin main
+       
+   - ❌ TUYỆT ĐỐI KHÔNG dùng: git push -f origin main
+     (Lệnh này sẽ XÓA MẤT code của cả team!)
 -------------------------------------------------------------------------
 ⚠️ QUY TẮC AN TOÀN:
 - Trước khi sửa code, LUÔN LUÔN gõ 'git pull' để tránh xung đột.

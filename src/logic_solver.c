@@ -1,45 +1,38 @@
-#include <string.h>
 #include <stdio.h>
-#include "../include/logic_weather.h"
+#include <math.h>
+#include <stdlib.h>
+#include <string.h>
+#include "../include/logic_solver.h"
 #include "../include/common_math.h"
 
 /*
- * NHIỆM VỤ: XỬ LÝ BIẾN ĐỔI DỮ LIỆU DỰA TRÊN THỜI TIẾT
+ * NHIỆM VỤ: CHẠY VÒNG LẶP VÉT CẠN ĐỂ TÌM SỐ BÁNH TỐI ƯU
  */
 
-// 1. Xử lý Nắng (Sun)
-// Logic: Tra bảng ma trận -> Cập nhật nếp/lá -> Đổi thời tiết.
-void handleSun(int *n, int *ld, int dc, int dg, char *weather) {
-    if (strcmp(weather, "Sun") != 0) return;
+void solve(int n, int dc, int dg, int ld, char *weather) {
+    // TODO 1: Tính toán chi phí nguyên liệu cho 1 cái bánh.
+    // - Nếp cho bánh chưng (dc^2) và bánh giầy (dg^2 * PI / 3).
+    // - Lá dong (1 hoặc 2 lá tùy kích thước).
+    // - Lưu ý: Xử lý trường hợp kích thước = 0 để tránh chia cho 0.
 
-    // TODO 1: Khai báo mảng 2 chiều [5][6] chứa các giá trị X% (Xem đề bài).
+    // TODO 2: Xác định giới hạn vòng lặp (Max số bánh có thể nấu).
+
+    // Biến lưu kết quả tốt nhất (Best Solution)
+    int best_bc = 0, best_bg = 0;
     
-    // TODO 2: Tính chỉ số hàng (ld % 5) và cột (dc % 6) để lấy X.
-    
-    // TODO 3: Cập nhật giá trị *n (tăng thêm X%) và *ld (giảm đi X).
-    // Gợi ý: Sử dụng hàm myRound() để làm tròn nếp.
+    // TODO 3: Viết 2 vòng lặp lồng nhau (for i, for j).
+    // - Duyệt tất cả khả năng số bánh chưng (i) và bánh giầy (j).
+    // - Kiểm tra điều kiện: Đủ nếp và đủ lá không?
+    // - Nếu đủ, tính số nếp dư.
 
-    // TODO 4: Kiểm tra (dc + dg) % 3 để đổi tên biến weather thành Rain/Wind/Cloud.
-}
+    // TODO 4: So sánh để tìm phương án tối ưu (Logic khó nhất).
+    // - Ưu tiên 1: Số nếp dư phải ít nhất (Min).
+    // - Ưu tiên 2 (Khi nếp dư bằng nhau): Xét theo Weather.
+    //      + Wind: Chọn phương án có nhiều Bánh Chưng nhất.
+    //      + Rain: Chọn phương án cân bằng nhất (abs(bc-bg) min).
+    //      + Fog: Chọn tổng số bánh ít nhất.
+    //      + Cloud: Chọn phương án có nhiều Bánh Giầy nhất.
 
-// 2. Xử lý Sương mù (Fog)
-// Logic: Thay đổi kích thước bánh (nhân đôi hoặc chia đôi).
-void handleFog(int *dc, int *dg, char *weather) {
-    if (strcmp(weather, "Fog") != 0) return;
-
-    // TODO: Gọi hàm isFibonacci() để kiểm tra dc và dg.
-    // - Nếu cả 2 là Fib: Giảm 50% kích thước.
-    // - Ngược lại: Tăng gấp đôi kích thước.
-    // Nhớ cập nhật trực tiếp vào con trỏ *dc và *dg.
-}
-
-// 3. Kiểm tra Mây (Cloud) - Số bạn bè
-// Logic: Kiểm tra xem n và ld có phải cặp số bạn bè không.
-bool checkAmicable(int n, int ld, char *weather) {
-    if (strcmp(weather, "Cloud") != 0) return false;
-
-    // TODO: Gọi hàm sumProperDivisors() cho n và ld.
-    // - Kiểm tra định nghĩa số bạn bè (Tổng ước số này bằng số kia).
-    // - Trả về true nếu đúng, false nếu sai.
-    return false; // [PLACEHOLDER]
+    // TODO 5: Ghi kết quả tìm được (best_bc, best_bg, min_nd) vào file output.out.
+    // Lưu ý định dạng in ra file phải chuẩn theo đề bài.
 }

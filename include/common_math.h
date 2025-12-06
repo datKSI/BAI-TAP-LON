@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 
-[cite_start]// Định nghĩa số PI dùng chung [cite: 143]
+// Định nghĩa số PI dùng chung
 #define PI 3.1415926535
 
 // Khai báo tên hàm (không viết code ở đây)
@@ -12,3 +12,10 @@ int sumProperDivisors(int n);
 int myRound(double n);
 
 #endif
+```
+
+---
+
+## 4. File `input.inp` (THÊM DỮ LIỆU TEST)
+```
+789 5 4 199 Rain

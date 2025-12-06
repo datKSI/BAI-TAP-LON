@@ -1,3 +1,14 @@
-banhchung_app
+# Object files
 *.o
-.DS_Store
+src/*.o
+
+# Executable
+banhchung_app
+banhchung_app.exe
+
+# Output files
+output.out
+
+# IDE files
+.vscode/
+.idea/
