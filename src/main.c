@@ -3,30 +3,71 @@
 #include "../include/common_math.h"
 #include "../include/logic_weather.h"
 #include "../include/logic_solver.h"
-
-/*
- * NHIỆM VỤ: QUẢN LÝ LUỒNG CHƯƠNG TRÌNH (MAIN FLOW)
- */
-
 int main() {
-    // Khai báo biến
-    int n, dc, dg, ld;
+    double n;
+    int dc, dg, ld;
     char weather[50];
 
-    // TODO 1: Mở file "input.inp" để đọc dữ liệu.
-    // - Nếu mở lỗi hoặc file sai định dạng -> Xử lý lỗi (in ra -1 -1 n).
-    // - Đóng file sau khi đọc xong.
+    FILE *fi = fopen("input.inp", "r");
+    if (!fi) {
+        FILE *fo = fopen("output.out", "w");
+        if (fo) { fprintf(fo, "-1 -1 0"); fclose(fo); }
+        return 0;
+    }
 
-    // TODO 2: Gọi các hàm xử lý dữ liệu đầu vào (Data Processing).
-    // - Gọi handleSun(...)
-    // - Gọi handleFog(...)
+    if (fscanf(fi, "%lf %d %d %d %49s", &n, &dc, &dg, &ld, weather) != 5) {
+        fclose(fi);
+        FILE *fo = fopen("output.out", "w");
+        if (fo) { fprintf(fo, "-1 -1 %.0f", n); fclose(fo); }
+        return 0;
+    }
+    fclose(fi);
 
-    // TODO 3: Kiểm tra điều kiện dừng sớm (Early Exit).
-    // - Gọi checkAmicable(...).
-    // - Nếu là số bạn bè -> In ra "0 0 n" vào output.out và kết thúc chương trình (return 0).
+    if (n <= 0 || ld <= 0 || (dc == 0 && dg == 0) || !validWeather(weather)) {
+        FILE *fo = fopen("output.out", "w");
+        if (fo) { fprintf(fo, "-1 -1 %.0f", n); fclose(fo); }
+        return 0;
+    }
 
-    // TODO 4: Gọi hàm giải thuật toán (Solver).
-    // - Gọi solve(...) để tính toán và ghi kết quả cuối cùng.
+    if (strcmp(weather, "Sun") == 0)
+        xuLySun(&n, &ld, dc, dg, weather);
+
+    if (strcmp(weather, "Fog") == 0)
+        xuLyFog(&dc, &dg);
+
+    if (strcmp(weather, "Cloud") == 0 && laBanBe((int)round(n), ld)) {
+        FILE *fo = fopen("output.out", "w");
+        if (fo) { fprintf(fo, "0 0 %.3f", n); fclose(fo); }
+        return 0;
+    }
+
+    double can_chung = tinhNepChung(dc);
+    double can_giay  = tinhNepGiay(dg);
+    int la_chung = (dc < 8) ? 1 : 2;
+    int la_giay  = (dg < 5) ? 1 : 2;
+
+    int bc = 0, bg = 0;
+    double nd = n;
+
+    if (strcmp(weather, "Wind") == 0)
+        giaiWind(n, can_chung, can_giay, ld, la_chung, la_giay, &bc, &bg, &nd);
+    else if (strcmp(weather, "Cloud") == 0)
+        giaiCloud(n, can_chung, can_giay, ld, la_chung, la_giay, &bc, &bg, &nd);
+    else if (strcmp(weather, "Rain") == 0)
+        giaiRain(n, can_chung, can_giay, ld, la_chung, la_giay, &bc, &bg, &nd);
+    else if (strcmp(weather, "Fog") == 0)
+        giaiFog(n, can_chung, can_giay, ld, la_chung, la_giay, &bc, &bg, &nd);
+    else {
+        FILE *fo = fopen("output.out", "w");
+        if (fo) { fprintf(fo, "-1 -1 %.0f", n); fclose(fo); }
+        return 0;
+    }
+
+    FILE *fo = fopen("output.out", "w");
+    if (fo) {
+        fprintf(fo, "%d %d %.3f", bc, bg, nd);
+        fclose(fo);
+    }
 
     return 0;
 }
