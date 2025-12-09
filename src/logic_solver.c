@@ -10,83 +10,89 @@
  */
 
 void solve(int n, int dc, int dg, int ld, char *weather) {
-    int best_bc = 0;             
-    int best_bg = 0;             
-    double min_nd = (double)n;
-    int best_compare_value = -100;
-    // TODO 1: Tính toán chi phí nguyên liệu cho 1 cái bánh.
-     // - Nếp cho bánh chưng (dc^2) và bánh giầy (dg^2 * PI / 3).
-    [cite_start]
-    double rice_chung =(double)dc*dc*sqrt((double)dc); // cong thuc tinh nep chung
-    [cite_start]
-    double rice_giay =((double)dg*dg*PI)/3;// cong thuc tinh nep giay
-    // - Lá dong (1 hoặc 2 lá tùy kích thước).
-    [cite_start]// so la can dung
-    int leaf_chung =(dc <8) ? 1:2; 
-    int leaf_giay =(dg <5) ? 1:2;
-    // - Lưu ý: Xử lý trường hợp kích thước = 0 để tránh chia cho 0.
-    // TODO 2: Xác định giới hạn vòng lặp (Max số bánh có thể nấu).
-    int max_i =(rice_chung >0) ? (int)(n/rice_chung)+1:n;
-    if (max_i>n) max_i=n; 
-    int max_j =(rice_giay >0) ? (int)(n/rice_giay)+1:n;
-    if (max_j>n) max_j=n;
-   
-    // Biến lưu kết quả tốt nhất (Best Solution)
-    int best_bc = 0, best_bg = 0;
-    
-    // TODO 3: Viết 2 vòng lặp lồng nhau (for i, for j).
-    // - Duyệt tất cả khả năng số bánh chưng (i) và bánh giầy (j).
-[cite_start]
-    for (int i=0;i<=n:i++){
-    for (int j=0;j<=n:j++){
-        double current_rice_used=(i*rice_chung)+(j*rice_giay);
-        int current_leaf_used=(i*leaf_chung)+(j*leaf_giay);
-    // - Kiểm tra điều kiện: Đủ nếp và đủ lá không?
-    // - Nếu đủ, tính số nếp dư.
-        if (current_rice_used <= (double)n && current_leaf_used <= ld) {
-        double current_nd = (double)n - current_rice_used;
+    // 1. Tính toán chi phí nguyên liệu cho 1 cái bánh.
+    // Công thức nếp Bánh Chưng: dc^2 * sqrt(dc)
+    double rice_chung = (double)dc * dc * sqrt((double)dc);
+    // Công thức nếp Bánh Giầy: (dg^2 * PI) / 3
+    double rice_giay = ((double)dg * dg * PI) / 3.0;
 
-    // TODO 4: So sánh để tìm phương án tối ưu (Logic khó nhất).
-    int chuyenDoiDuong(int x){ 
-    if(x<0) return -x; return x; }
-    int soSanhLuaChon(int i1,int j1,int nepDu1,int i2,int j2,int nepDu2,int thoiTiet){
-    // - Ưu tiên 1: Số nếp dư phải ít nhất (Min).
-    if(nepDu1<nepDu2) return -1;
-    if(nepDu1>nepDu2) return 1;
-    // - Ưu tiên 2 (Khi nếp dư bằng nhau): Xét theo Weather.
-         switch(thoiTiet){
-    //      + Wind: Chọn phương án có nhiều Bánh Chưng nhất.
-        case 1:
-            if(i1>i2) return -1;
-            if(i1<i2) return 1;
-            return 0;
-    //      + Rain: Chọn phương án cân bằng nhất (abs(bc-bg) min).
-        case 2:
-            if(chuyenDoiDuong(i1-j1)<chuyenDoiDuong(i2-j2)) return -1;
-            if(chuyenDoiDuong(i1-j1)>chuyenDoiDuong(i2-j2)) return 1;
-            return 0;
-   //      + Fog: Chọn tổng số bánh ít nhất.
-        case 3:
-            if(i1+j1<i2+j2) return -1;
-            if(i1+j1>i2+j2) return 1;
-            return 0;
-  //      + Cloud: Chọn phương án có nhiều Bánh Giầy nhất.
-        case 4:
-            if(j1>j2) return -1;
-            if(j1<j2) return 1;
-            return 0;
-    }
-    return 0;
-}
+    // Tránh chia cho 0
+    if (dc == 0) rice_chung = 1e9;
+    if (dg == 0) rice_giay = 1e9;
+
+    // Số lá dong cần dùng
+    int leaf_chung = (dc < 8) ? 1 : 2; 
+    int leaf_giay = (dg < 5) ? 1 : 2;
+
+    // 2. Xác định giới hạn vòng lặp
+    int max_bc = (int)((double)n / rice_chung);
+    int max_bg = (int)((double)n / rice_giay);
+   
+    // Biến lưu kết quả tốt nhất
+    int best_bc = 0, best_bg = 0;
+    double min_nd = (double)n; // Mặc định dư tất cả
+    int found = 0;
+    
+    // 3. Vòng lặp Vét cạn (Brute-force)
+    // SỬA LỖI: Dùng dấu chấm phẩy ; trong vòng for, không dùng :
+    for (int i = 0; i <= max_bc; i++) {
+        for (int j = 0; j <= max_bg; j++) {
+            
+            double used_rice = i * rice_chung + j * rice_giay;
+            int used_leaf = i * leaf_chung + j * leaf_giay;
+
+            // Kiểm tra điều kiện đủ tài nguyên
+            if (used_rice <= n && used_leaf <= ld) {
+                double current_nd = n - used_rice;
+                int is_better = 0;
+
+                if (!found) {
+                    is_better = 1;
+                } else {
+                    // --- SO SÁNH TỐI ƯU ---
+                    // Ưu tiên 1: Nếp dư ít nhất (Sai số 0.001)
+                    if (current_nd < min_nd - 0.001) {
+                        is_better = 1;
+                    } 
+                    // Ưu tiên 2: Nếu nếp dư xấp xỉ nhau, xét theo Weather
+                    else if (fabs(current_nd - min_nd) < 0.001) {
+                        if (strcmp(weather, "Wind") == 0) {
+                            // Wind: Ưu tiên nhiều Bánh Chưng (i max)
+                            if (i > best_bc) is_better = 1;
+                        } 
+                        else if (strcmp(weather, "Rain") == 0) {
+                            // Rain: Ưu tiên cân bằng (abs(bc-bg) min)
+                            if (abs(i - j) < abs(best_bc - best_bg)) is_better = 1;
+                        } 
+                        else if (strcmp(weather, "Fog") == 0) {
+                            // Fog: Ưu tiên tổng số bánh ít nhất (i+j min)
+                            if ((i + j) < (best_bc + best_bg)) is_better = 1;
+                        } 
+                        else if (strcmp(weather, "Cloud") == 0) {
+                            // Cloud: Ưu tiên nhiều Bánh Giầy (j max)
+                            if (j > best_bg) is_better = 1;
+                        }
+                    }
+                }
+
+                // Cập nhật kết quả nếu tìm thấy phương án tốt hơn
+                if (is_better) {
+                    best_bc = i;
+                    best_bg = j;
+                    min_nd = current_nd;
+                    found = 1;
+                }
             }
         }
     }
-}
-    // TODO 5: Ghi kết quả tìm được (best_bc, best_bg, min_nd) vào file output.out.
-    // Lưu ý định dạng in ra file phải chuẩn theo đề bài.
-FILE *fout = fopen("output.out", "w");
-    if (fout != NULL) {
-        [cite_start]
-        fprintf(fout, "%d %d %.3f", best_bc, best_bg, min_nd);
+
+    // 4. Ghi kết quả
+    FILE *fout = fopen("output.out", "w");
+    if (fout) {
+        if (found) 
+            fprintf(fout, "%d %d %.3f", best_bc, best_bg, min_nd);
+        else 
+            fprintf(fout, "0 0 %.3f", (double)n); // Không nấu được gì
         fclose(fout);
+    }
 }
