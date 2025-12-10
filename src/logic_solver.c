@@ -5,6 +5,7 @@
 #include "../include/logic_solver.h"
 #include "../include/common_math.h"
 
+
 /*
  * NHIỆM VỤ: CHẠY VÒNG LẶP VÉT CẠN ĐỂ TÌM SỐ BÁNH TỐI ƯU
  */
@@ -87,12 +88,9 @@ void solve(int n, int dc, int dg, int ld, char *weather) {
         }
     }
     // 4. Ghi kết quả
-    FILE *fout = fopen("output.out", "w");
+   FILE *fout = fopen("output.out", "w");
     if (fout) {
-        if (found) 
-            fprintf(fout, "%d %d %.3f", best_bc, best_bg, min_nd);
-        else 
-            fprintf(fout, "0 0 %.3f", (double)n);// Không nấu được gì
+        fprintf(fout, "%d %d %.3f", best_bc, best_bg, min_nd);
         fclose(fout);
     }
 }
