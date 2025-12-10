@@ -7,17 +7,17 @@
 
 // 1. Hàm kiểm tra số Fibonacci
 // Logic: Trả về true nếu n là số Fibonacci (0, 1, 1, 2, 3, 5...), ngược lại false.
-int isFibonacci(int n){
-    if(n==0||n==1) return 1;
-    long long fn2=0,fn1=1;
-    for(int i=2;i<=92;i++){
-        long long fn=fn1+fn2;
-        if(fn==n) return 1;
-        if(fn>n) return 0;
-        fn2=fn1;
-        fn1=fn;
+bool isFibonacci(int n){
+    if (n == 0 || n == 1) return true;
+    long long fn2 = 0, fn1 = 1;
+    for (int i = 2; i <= 92; i++) { // 92 để tránh tràn long long
+        long long fn = fn1 + fn2;
+        if (fn == n) return true;
+        if (fn > n) return false;
+        fn2 = fn1;
+        fn1 = fn;
     }
-    return 0;
+    return false;
 }
 
 // 2. Hàm tính tổng ước số thực sự (Proper Divisors)

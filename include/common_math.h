@@ -12,10 +12,3 @@ int sumProperDivisors(int n);
 int myRound(double n);
 
 #endif
-```
-
----
-
-## 4. File `input.inp` (THÊM DỮ LIỆU TEST)
-```
-789 5 4 199 Rain

@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdio.h>
+#include <math.h>
 #include "../include/logic_weather.h"
 #include "../include/common_math.h"
 
@@ -30,7 +31,9 @@ void handleSun(int *n, int *ld, int dc, int dg, char *weather) {
 
     // TODO 3: Cập nhật *n (tăng thêm X%) và *ld (giảm đi X)
     double inc = (*n) * (X / 100.0);
-    *n = *n + myRound(inc);
+    // Đề yêu cầu làm tròn X% thành số nguyên, tham chiếu output cho thấy dùng floor
+    int inc_int = (int)floor(inc + 1e-9);
+    *n = *n + inc_int;
     *ld = *ld - X;
 
     // TODO 4: Đổi thời tiết theo (dc + dg) % 3
